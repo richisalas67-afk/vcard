@@ -10,12 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#2c2e30;    /* gris principal del fondo */
-      --bg-2:#212325;  /* gris más oscuro para el círculo inferior */
+      --bg:#2c2e30;     /* gris principal */
+      --bg-2:#212325;   /* gris más oscuro para el arco */
       --text:#f1f2f4;
       --muted:#c9cbd1;
       --shadow:0 10px 30px rgba(0,0,0,.25);
       --maxw:960px;
+      /* controles del arco para que coincida con la referencia */
+      --arc-width: 140%;         /* ancho relativo del arco */
+      --arc-height: 460px;       /* altura del arco */
+      --arc-offset: 180px;       /* qué tanto sube el arco */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -24,30 +28,30 @@
       color:var(--text); background:var(--bg);
       display:flex; align-items:flex-start; justify-content:center;
     }
-    .page{position:relative; width:100%; max-width:var(--maxw);}
+    .page{position:relative; width:100%; max-width:var(--maxw);}  
 
-    /* ================= HERO (imagen independiente) ================= */
+    /* ================= HERO (imagen superior sin recorte) ================= */
     .hero{ position:relative; width:100%; background:var(--bg); }
-    /* Reservamos la proporción para evitar saltos de layout */
-    .hero .ratio{ width:100%; aspect-ratio:1920/564; overflow:hidden; }
-    .hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-    /* Línea divisoria blanca debajo de la imagen */
+    .hero img{ width:100%; height:auto; display:block; /* NO recortes */ }
+    /* Línea blanca divisoria para replicar el diseño */
     .hero::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:8px; background:#fff; opacity:.95; }
 
-    /* ================= ZONA OSCURA con círculo hecho en código ================= */
+    /* ================= ZONA OSCURA con arco generado por CSS ================= */
     .card{
       position:relative; text-align:center; box-shadow:var(--shadow);
       margin:-84px auto 40px; /* se monta bajo el hero */
-      padding:clamp(22px,3vw,36px) clamp(16px,2.5vw,28px) clamp(44px,5vw,64px);
-      background:linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-      border-radius:0 0 clamp(120px,12vw,220px) clamp(120px,12vw,220px);
+      padding:clamp(22px,3vw,36px) clamp(16px,2.5vw,28px) clamp(60px,7vw,80px);
+      background:var(--bg);
+      border-radius:0 0 0 0; /* el arco lo genera el ::after */
+      overflow:hidden;
     }
-    /* Semicírculo inferior generado por CSS (no imagen) */
+    /* Arco inferior grande (recrea la imagen de referencia) */
     .card::after{
       content:""; position:absolute; left:50%; transform:translateX(-50%);
-      bottom:calc(-1 * clamp(100px,11vw,180px));
-      width:120%; max-width:1400px; height:clamp(260px,28vw,420px);
-      background:var(--bg-2); border-radius:50%; z-index:-1; box-shadow:inset 0 -20px 40px rgba(0,0,0,.28);
+      bottom:calc(-1 * var(--arc-offset));
+      width:var(--arc-width); max-width:1500px; height:var(--arc-height);
+      background:radial-gradient(100% 100% at 50% 0%, var(--bg-2) 0%, var(--bg-2) 60%, rgba(0,0,0,.25) 100%);
+      border-radius:50%; z-index:-1;
     }
 
     /* Avatar flotante y centrado */
@@ -65,18 +69,21 @@
     .btn:active{ transform:translateY(0); }
 
     @media (min-width: 680px){ .actions{ grid-template-columns:1fr 1fr; } }
+
+    /* Ajustes responsivos del arco para pantallas pequeñas */
+    @media (max-width:480px){
+      :root{ --arc-height: 380px; --arc-offset: 150px; }
+    }
   </style>
 </head>
 <body>
   <main class="page" aria-labelledby="name">
-    <!-- HERO: imagen superior independiente -->
+    <!-- HERO: imagen superior independiente (sin recortes verticales) -->
     <header class="hero" role="banner">
-      <div class="ratio">
-        <img src="assets/expo_img.png" alt="Escena de expo con visor VR" />
-      </div>
+      <img src="assets/expo_img.png" alt="Escena de expo con visor VR" />
     </header>
 
-    <!-- CARD PRINCIPAL con fondo gris y semicírculo generado por CSS -->
+    <!-- CARD PRINCIPAL con fondo gris y arco CSS -->
     <section class="card">
       <figure class="avatar" aria-hidden="true">
         <img src="assets/img_perfil.png" alt="Retrato de Ricardo Salas" />
