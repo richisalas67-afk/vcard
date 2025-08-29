@@ -4,96 +4,61 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ricardo Salas — vCard</title>
-  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      /* Colores base */
-      --bg:#2c2e30;     /* gris principal */
-      --bg-2:#212325;   /* gris más oscuro para el óvalo */
-      --text:#f1f2f4;
-      --muted:#c9cbd1;
-      --shadow:0 10px 30px rgba(0,0,0,.25);
-      --maxw:960px;
-
-      /* Dimensiones y layout */
-      --hero-ar: 1920/564;                /* proporción de la imagen expo */
-      --avatar-size: clamp(160px, 22vw, 220px);
-      --avatar-border: 8px;
-      --card-pad-x: clamp(16px,2.5vw,28px);
-      /* padding superior fijo (independiente del avatar) */
-      --card-pad-t: clamp(100px, 12vw, 140px);
-      --card-pad-b: clamp(70px,8vw,100px);
-
-      /* Óvalo inferior (toca el borde inferior del bloque) */
-      --oval-width: min(1500px, 150%);
-      --oval-height: clamp(380px, 42vw, 560px);
-      --oval-shadow: inset 0 -20px 40px rgba(0,0,0,.28);
+      --bg:#2c2e30; --bg-2:#212325; --text:#f1f2f4; --muted:#c9cbd1; --shadow:0 10px 30px rgba(0,0,0,.25); --maxw:960px;
+      --hero-ar: 1920/564;
+      --avatar-size: clamp(160px, 22vw, 220px); --avatar-border: 8px;
+      --card-pad-x: clamp(16px,2.5vw,28px); --card-pad-t: clamp(100px, 12vw, 140px); --card-pad-b: clamp(70px,8vw,100px);
+      --oval-width: min(1500px, 150%); --oval-height: clamp(380px, 42vw, 560px); --oval-shadow: inset 0 -20px 40px rgba(0,0,0,.28);
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial;
-      color:var(--text); background:var(--bg);
-      display:flex; align-items:flex-start; justify-content:center;
-    }
-    .page{position:relative; width:100%; max-width:var(--maxw);}  
+    body{margin:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial;color:var(--text);background:var(--bg);display:flex;align-items:flex-start;justify-content:center}
+    .page{position:relative;width:100%;max-width:var(--maxw)}
 
-    /* ================= HERO (SIN RECORTE) ================= */
-    .hero{ position:relative; width:100%; background:var(--bg); z-index:1; }
-    .hero .frame{ width:100%; aspect-ratio: var(--hero-ar); overflow:visible; }
-    .hero img{ width:100%; height:auto; display:block; }
-    .hero::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:8px; background:#fff; opacity:.95; }
+    /* HERO */
+    .hero{position:relative;width:100%;background:var(--bg);z-index:1}
+    .hero .frame{width:100%;aspect-ratio:var(--hero-ar)}
+    .hero img{width:100%;height:auto;display:block}
+    .hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:8px;background:#fff;opacity:.95}
 
-    /* ================= AVATAR FLOTANTE (INDEPENDIENTE) ================= */
-    .seam{ position:relative; height:0; z-index:3; }
-    .avatar{
-      position:absolute; left:50%; top:0; transform:translate(-50%, -50%);
-      width:var(--avatar-size); aspect-ratio:1/1; height:auto;
-      border-radius:50%; overflow:hidden; box-shadow:0 18px 40px rgba(0,0,0,.35);
-      border:var(--avatar-border) solid var(--bg); background:#111; display:block; z-index:3; margin:0;
-    }
-    .avatar img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+    /* AVATAR flotante */
+    .seam{position:relative;height:0;z-index:3}
+    .avatar{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:var(--avatar-size);aspect-ratio:1/1;height:auto;border-radius:50%;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.35);border:var(--avatar-border) solid var(--bg);background:#111;display:block;margin:0}
+    .avatar img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 
-    /* ================= CARD ================= */
-    .card{
-      position:relative; text-align:center; box-shadow:var(--shadow);
-      background:var(--bg);
-      padding: var(--card-pad-t) var(--card-pad-x) var(--card-pad-b);
-      z-index:2; /* debajo del avatar pero sobre el hero */
-    }
+    /* CARD */
+    .card{position:relative;text-align:center;box-shadow:var(--shadow);background:var(--bg);padding:var(--card-pad-t) var(--card-pad-x) var(--card-pad-b);z-index:2}
+    .content{max-width:820px;margin:0 auto}
+    h1{margin:0 0 14px;font-size:clamp(28px,4.6vw,56px);line-height:1.02;letter-spacing:.02em;font-weight:800;text-transform:uppercase;text-shadow:0 2px 0 rgba(0,0,0,.2)}
+    .lead{margin:0 auto clamp(20px,2.5vw,30px);max-width:40ch;font-size:clamp(16px,2.4vw,22px);color:var(--muted);font-weight:400}
 
-    /* Contenido */
-    .content{ max-width:820px; margin:0 auto; }
-    h1{ margin:0 0 14px; font-size:clamp(28px, 4.6vw, 56px); line-height:1.02; letter-spacing:.02em; font-weight:800; text-transform:uppercase; text-shadow:0 2px 0 rgba(0,0,0,.2); }
-    .lead{ margin:0 auto clamp(20px,2.5vw,30px); max-width:40ch; font-size:clamp(16px, 2.4vw, 22px); color:var(--muted); font-weight:400; }
+    .actions{display:grid;gap:clamp(12px,1.8vw,18px);width:100%;max-width:720px;margin:0 auto;grid-template-columns:1fr}
+    .btn{display:flex;align-items:center;justify-content:center;height:clamp(54px,7vw,70px);padding:0 clamp(16px,2.2vw,24px);border-radius:18px;border:2px solid rgba(255,255,255,.85);color:var(--text);text-decoration:none;font-size:clamp(18px,3.2vw,28px);font-weight:600;background:rgba(0,0,0,.15);backdrop-filter:saturate(120%) blur(2px);transition:transform .12s ease,box-shadow .12s ease,background .12s ease;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+    .btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.06);box-shadow:0 12px 24px rgba(0,0,0,.28)}
+    .btn:active{transform:translateY(0)}
+    @media (min-width:680px){.actions{grid-template-columns:1fr 1fr}}
 
-    /* Botones */
-    .actions{ display:grid; gap:clamp(12px,1.8vw,18px); width:100%; max-width:720px; margin:0 auto; grid-template-columns:1fr; }
-    .btn{ display:flex; align-items:center; justify-content:center; height:clamp(54px, 7vw, 70px); padding:0 clamp(16px,2.2vw,24px); border-radius:18px; border:2px solid rgba(255,255,255,.85); color:var(--text); text-decoration:none; font-size:clamp(18px, 3.2vw, 28px); font-weight:600; background:rgba(0,0,0,.15); backdrop-filter:saturate(120%) blur(2px); transition:transform .12s ease, box-shadow .12s ease, background .12s ease; box-shadow:0 6px 16px rgba(0,0,0,.25); }
-    .btn:hover{ transform:translateY(-2px); background:rgba(255,255,255,.06); box-shadow:0 12px 24px rgba(0,0,0,.28); }
-    .btn:active{ transform:translateY(0); }
+    /* Panel desplegable de trayectoria */
+    .collapse{grid-column:1/-1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.12);border-radius:14px;max-height:0;opacity:0;overflow:hidden;transition:max-height .35s ease, opacity .35s ease, padding .35s ease, margin .35s ease;padding:0 16px;margin:0}
+    .collapse.open{max-height:1000px;opacity:1;padding:16px;margin-top:8px}
+    .prose{color:var(--muted);text-align:left;line-height:1.6}
+    .prose p{margin:.5rem 0}
+    .prose ul{margin:.5rem 0;padding-left:1.1rem}
 
-    @media (min-width: 680px){ .actions{ grid-template-columns:1fr 1fr; } }
-
-    /* ================= ÓVALO INFERIOR ================= */
-    .oval{ position:absolute; left:50%; bottom:0; transform:translate(-50%, 50%); width:var(--oval-width); height:var(--oval-height); border-radius:50%; background:var(--bg-2); box-shadow:var(--oval-shadow); pointer-events:none; z-index:0; }
-    .card > *{ position:relative; z-index:1; }
-
-    /* Ajustes móviles finos */
-    @media (max-width:420px){ :root{ --oval-height: 460px; } }
+    /* Óvalo inferior */
+    .oval{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:var(--oval-width);height:calc(var(--oval-height)/2);border-radius:9999px 9999px 0 0 / 100% 100% 0 0;background:var(--bg-2);box-shadow:var(--oval-shadow);pointer-events:none;z-index:0}
+    .card>*{position:relative;z-index:1}
   </style>
 </head>
 <body>
   <main class="page" aria-labelledby="name">
-    <!-- HERO: imagen superior independiente y sin recorte -->
     <header class="hero" role="banner">
-      <div class="frame">
-        <img src="assets/expo_img.png" alt="Escena de expo con visor VR" />
-      </div>
+      <div class="frame"><img src="assets/expo_img.png" alt="Escena de expo con visor VR" /></div>
     </header>
 
     <!-- AVATAR flotante independiente -->
@@ -103,7 +68,6 @@
       </figure>
     </div>
 
-    <!-- CARD PRINCIPAL con óvalo CSS -->
     <section class="card">
       <div class="content">
         <h1 id="name">RICARDO SALAS</h1>
@@ -111,28 +75,31 @@
 
         <!-- BOTONES / ACCIONES -->
         <nav class="actions" aria-label="Enlaces principales">
-          <a id="btn-trayectoria" class="btn" href="#">Trayectoria</a>
+          <a id="btn-trayectoria" class="btn" href="#trayectoria">Trayectoria</a>
           <a id="btn-sitio" class="btn" href="#">Sitio Web</a>
           <a id="btn-contacto" class="btn" href="#">Contacto</a>
           <a id="btn-email" class="btn" href="#">E‑mail</a>
+
+          <!-- Panel colapsable -->
+          <div id="trayectoria-panel" class="collapse" aria-hidden="true">
+            <div class="prose">
+              <p>Soy Director de Arte y estratega creativo con más de una década de experiencia en marketing, publicidad y contenidos digitales en Latinoamérica. He liderado equipos de diseño y campañas integradas para marcas internacionales en México, Colombia y Argentina, desarrollando universos visuales, narrativas de marca y experiencias innovadoras. Mi formación combina dirección de arte, animación 2D/3D y producción audiovisual, lo que me permite unir creatividad y estrategia en proyectos que conectan marcas con audiencias de manera auténtica y memorable.</p>
+            </div>
+          </div>
         </nav>
       </div>
 
-      <!-- Óvalo decorativo -->
       <div class="oval" aria-hidden="true"></div>
     </section>
   </main>
 
-  <!-- =========================================================
-       🔗 SECCIÓN DE ENLACES (FÁCIL DE EDITAR)
-       Cambia aquí los destinos de cada botón.
-  ========================================================== -->
+  <!-- ===================== ENLACES FÁCILES DE EDITAR ===================== -->
   <script>
     const LINKS = {
-      trayectoria: '#',      // ← Reemplaza por tu URL
-      sitio:       '#',      // ← Reemplaza por tu URL
-      contacto:    '#',      // ← Reemplaza por tu URL
-      email:       'mailto:ricardo@example.com' // ← Reemplaza por tu correo
+      trayectoria: '#trayectoria', // el click se maneja por JS (toggle)
+      sitio:       '#',
+      contacto:    'https://wa.me/524441915908', // ⚠️ si es necesario, agrega el código de país (ej. 52 para MX)
+      email:       'mailto:ricardo.esli.salas.mtz@gmail.com'
     };
 
     const set = (id, url) => { const el = document.getElementById(id); if (el) el.setAttribute('href', url); };
@@ -140,6 +107,17 @@
     set('btn-sitio',       LINKS.sitio);
     set('btn-contacto',    LINKS.contacto);
     set('btn-email',       LINKS.email);
+
+    // Toggle de trayectoria
+    const trayBtn = document.getElementById('btn-trayectoria');
+    const panel   = document.getElementById('trayectoria-panel');
+    trayBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      panel.classList.toggle('open');
+      const open = panel.classList.contains('open');
+      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if(open){ panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+    });
   </script>
 </body>
 </html>
